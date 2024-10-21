@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Bus Tracking Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000, #474747);
+            color: #ffffff;
+            overflow-y: auto;
+        }
+
+        header {
+            background-color: #000000;
+            color: #f2af29;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        #headerLogo {
+            width: 100px;
+            display: block;
+            margin: 10px auto;
+            filter: drop-shadow(2px 4px 6px #000000);
+        }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Buttons */
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #f2af29;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000000;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        button:hover {
+            background-color: #63d729;
+            box-shadow: 0px 0px 15px #63d729, 0px 0px 25px #63d729;
+        }
+
+        /* Section styles */
+        section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            color: #f2af29;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #f2af29;
+            border-radius: 5px;
+            min-height: 100px;
+            font-size: 18px;
+            background-color: #000000;
+            color: #63d729;
+            box-shadow: 0px 0px 15px #f2af29, 0px 0px 30px #63d729;
+        }
+
+        /* Background animation */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(98,98,98,0.4), rgba(0,0,0,0.6));
+            pointer-events: none;
+            animation: pulse 5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Campus Shuttle Tracking</h1>
+        <img src="https://i.ibb.co/SN2M4v7/spartans-hellment.png" alt="Spartans Logo" id="headerLogo">
+    </header>
+    <main class="container">
+        <!-- Bus Status Section -->
+        <section id="statusSection">
+            <h2>Bus Status</h2>
+            <button id="statusBtn">Bus Status</button>
+        </section>
+
+        <!-- Bus Schedule Section -->
+        <section id="scheduleSection">
+            <h2>Bus Schedule</h2>
+            <button id="scheduleBtn">Bus Schedule</button>
+            <button id="campusRouteScheduleBtn" style="display: none;">Campus Route Schedule</button>
+            <button id="walmartRouteScheduleBtn" style="display: none;">Walmart Route Schedule</button>
+            <button id="hotelRouteScheduleBtn" style="display: none;">Hotel Route Schedule</button>
+        </section>
+
+        <!-- Routes Section -->
+        <section id="routesSection">
+            <h2>Bus Routes</h2>
+            <button id="routesBtn">Campus Map</button>
+            <button id="campusRouteBtn">Campus Route</button>
+            <button id="walmartRouteBtn">Walmart Route</button>
+            <button id="hotelRouteBtn">Hotel Route</button>
+        </section>
+
+        
+    <!-- Bus Capacity Section -->
+    <section id="capacitySection">
+        <h2>Bus Capacity</h2>
+        <p>Current bus occupancy: <span id="busCapacity">75%</span></p>
+        <button id="notifyBtn">Notify me when bus arrives</button>
+    </section>
+
+    <!-- Output Section -->
+    
+        <div id="output">Loading bus status...</div>
+    
+    <!-- Leaflet Map Section -->
+    <section id="mapSection">
+        <h2>Live Bus Location</h2>
+        <div id="map" style="height: 400px;"></div>
+    </section>
+
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([37.548, -77.452], 13); // Coordinates set to Norfolk area
+
+        // Load map tiles from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Simulate real-time bus tracking with a random bus position
+        var busMarker = L.marker([37.548, -77.452]).addTo(map);
+
+        // Function to simulate bus position updates
+        function updateBusPosition() {
+            var lat = 37.548 + (Math.random() - 0.5) * 0.01;
+            var lon = -77.452 + (Math.random() - 0.5) * 0.01;
+            busMarker.setLatLng([lat, lon]);
+        }
+
+        // Update bus position every 5 seconds
+        setInterval(updateBusPosition, 5000);
+    
+    // Simulate real-time bus capacity updates
+    function updateBusCapacity() {
+        const capacity = Math.floor(Math.random() * 100) + 1;
+        document.getElementById('busCapacity').innerText = capacity + '%';
+
+        if (capacity > 80) {
+            alert("Bus is nearly full! Please prepare accordingly.");
+        }
+    }
+
+    setInterval(updateBusCapacity, 10000);
+
+    // Notification button logic
+    document.getElementById('notifyBtn').addEventListener('click', function() {
+        alert("You will be notified when the bus arrives.");
+    });
+    </script>
+    
+    </main>
+    
+
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js">
+    // Simulate real-time bus capacity updates
+    function updateBusCapacity() {
+        const capacity = Math.floor(Math.random() * 100) + 1;
+        document.getElementById('busCapacity').innerText = capacity + '%';
+
+        if (capacity > 80) {
+            alert("Bus is nearly full! Please prepare accordingly.");
+        }
+    }
+
+    setInterval(updateBusCapacity, 10000);
+
+    // Notification button logic
+    document.getElementById('notifyBtn').addEventListener('click', function() {
+        alert("You will be notified when the bus arrives.");
+    });
+    </script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js">
+    // Simulate real-time bus capacity updates
+    function updateBusCapacity() {
+        const capacity = Math.floor(Math.random() * 100) + 1;
+        document.getElementById('busCapacity').innerText = capacity + '%';
+
+        if (capacity > 80) {
+            alert("Bus is nearly full! Please prepare accordingly.");
+        }
+    }
+
+    setInterval(updateBusCapacity, 10000);
+
+    // Notification button logic
+    document.getElementById('notifyBtn').addEventListener('click', function() {
+        alert("You will be notified when the bus arrives.");
+    });
+    </script>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js">
+    // Simulate real-time bus capacity updates
+    function updateBusCapacity() {
+        const capacity = Math.floor(Math.random() * 100) + 1;
+        document.getElementById('busCapacity').innerText = capacity + '%';
+
+        if (capacity > 80) {
+            alert("Bus is nearly full! Please prepare accordingly.");
+        }
+    }
+
+    setInterval(updateBusCapacity, 10000);
+
+    // Notification button logic
+    document.getElementById('notifyBtn').addEventListener('click', function() {
+        alert("You will be notified when the bus arrives.");
+    });
+    </script>
+    
+    <script>
+        // Function to generate random bus statuses
+        function getRandomStatus() {
+            const statuses = [
+                "Bus arriving at stop 3 in 2 minutes.",
+                "Bus is delayed, arriving in 5 minutes.",
+                "Bus at stop 5, next stop in 3 minutes.",
+                "Bus has left the campus, next stop Walmart.",
+                "Bus arriving at Hotel in 4 minutes."
+            ];
+            return statuses[Math.floor(Math.random() * statuses.length)];
+        }
+
+        // Function to update the bus status every 5 seconds
+        function updateBusStatus() {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = getRandomStatus();
+        }
+
+        // Initial status update
+        updateBusStatus();
+
+        // Update bus status every 5 seconds
+        setInterval(updateBusStatus, 5000);
+    
+    // Simulate real-time bus capacity updates
+    function updateBusCapacity() {
+        const capacity = Math.floor(Math.random() * 100) + 1;
+        document.getElementById('busCapacity').innerText = capacity + '%';
+
+        if (capacity > 80) {
+            alert("Bus is nearly full! Please prepare accordingly.");
+        }
+    }
+
+    setInterval(updateBusCapacity, 10000);
+
+    // Notification button logic
+    document.getElementById('notifyBtn').addEventListener('click', function() {
+        alert("You will be notified when the bus arrives.");
+    });
+    </script>
+    
+</body>
+
+</html>
