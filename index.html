@@ -143,7 +143,6 @@
     <footer>
         <h2>Translate Page</h2>
         <div id="google_translate_element"></div>
-        <button onclick="triggerTranslate()">Translate to Spanish</button>
     </footer>
 
     <!-- Google Translate Script -->
@@ -153,14 +152,6 @@
                 pageLanguage: 'en',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
-        }
-
-        function triggerTranslate() {
-            var translateDropdown = document.querySelector('.goog-te-combo');
-            if (translateDropdown) {
-                translateDropdown.value = 'es'; // Set to Spanish
-                translateDropdown.dispatchEvent(new Event('change'));
-            }
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
