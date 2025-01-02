@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,10 +37,8 @@
             text-align: center;
             max-width: 1200px;
             margin: 0 auto;
-            animation: fadeIn 1.5s ease-in-out;
         }
 
-        /* Buttons */
         button {
             margin: 10px;
             padding: 15px 30px;
@@ -62,7 +59,6 @@
             box-shadow: 0px 0px 15px #63d729, 0px 0px 25px #63d729;
         }
 
-        /* Section styles */
         section {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
@@ -77,6 +73,10 @@
             font-weight: 700;
         }
 
+        #google_translate_element {
+            margin: 20px 0;
+        }
+
         #output {
             margin-top: 20px;
             padding: 20px;
@@ -89,35 +89,19 @@
             box-shadow: 0px 0px 15px #f2af29, 0px 0px 30px #63d729;
         }
 
-        /* Background animation */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(98,98,98,0.4), rgba(0,0,0,0.6));
-            pointer-events: none;
-            animation: pulse 5s infinite alternate ease-in-out;
+        #eta {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #f2af29;
         }
 
-        @keyframes pulse {
-            0% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            background-color: #000000;
+            padding: 20px;
+            color: #f2af29;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.6);
         }
     </style>
 </head>
@@ -131,45 +115,58 @@
         <!-- Bus Status Section -->
         <section id="statusSection">
             <h2>Bus Status</h2>
-            <button id="statusBtn">Bus Status</button>
+            <p id="eta">Estimated Time of Arrival (Bus A): Calculating...</p>
         </section>
 
         <!-- Bus Schedule Section -->
         <section id="scheduleSection">
             <h2>Bus Schedule</h2>
             <button id="scheduleBtn">Bus Schedule</button>
-            <button id="campusRouteScheduleBtn" style="display: none;">Campus Route Schedule</button>
-            <button id="walmartRouteScheduleBtn" style="display: none;">Walmart Route Schedule</button>
-            <button id="hotelRouteScheduleBtn" style="display: none;">Hotel Route Schedule</button>
         </section>
 
         <!-- Routes Section -->
         <section id="routesSection">
             <h2>Bus Routes</h2>
             <button id="routesBtn">Campus Map</button>
-            <button id="campusRouteBtn">Campus Route</button>
-            <button id="walmartRouteBtn">Walmart Route</button>
-            <button id="hotelRouteBtn">Hotel Route</button>
         </section>
 
-        
-    <!-- Bus Capacity Section -->
-    <section id="capacitySection">
-        <h2>Bus Capacity</h2>
-        <p>Current bus occupancy: <span id="busCapacity">75%</span></p>
-        <button id="notifyBtn">Notify me when bus arrives</button>
-    </section>
-
-    <!-- Output Section -->
-    
+        <!-- Output Section -->
         <div id="output">Loading bus status...</div>
-    
-    <!-- Leaflet Map Section -->
-    <section id="mapSection">
-        <h2>Live Bus Location</h2>
-        <div id="map" style="height: 400px;"></div>
-    </section>
 
+        <!-- Leaflet Map Section -->
+        <section id="mapSection">
+            <h2>Live Bus Location</h2>
+            <div id="map" style="height: 400px;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>Translate Page</h2>
+        <div id="google_translate_element"></div>
+        <button onclick="triggerTranslate()">Translate to Spanish</button>
+    </footer>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+
+        function triggerTranslate() {
+            var translateDropdown = document.querySelector('.goog-te-combo');
+            if (translateDropdown) {
+                translateDropdown.value = 'es'; // Set to Spanish
+                translateDropdown.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Leaflet Map and ETA Script -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Initialize the map
         var map = L.map('map').setView([37.548, -77.452], 13); // Coordinates set to Norfolk area
@@ -191,128 +188,18 @@
 
         // Update bus position every 5 seconds
         setInterval(updateBusPosition, 5000);
-    
-    // Simulate real-time bus capacity updates
-    function updateBusCapacity() {
-        const capacity = Math.floor(Math.random() * 100) + 1;
-        document.getElementById('busCapacity').innerText = capacity + '%';
 
-        if (capacity > 80) {
-            alert("Bus is nearly full! Please prepare accordingly.");
+        // Simulate ETA for Bus A and Bus B
+        let currentBus = 'A';
+        function updateETA() {
+            const minutes = Math.floor(Math.random() * 10) + 1; // Random ETA between 1-10 minutes
+            const etaElement = document.getElementById('eta');
+            etaElement.innerText = `Estimated Time of Arrival (Bus ${currentBus}): ${minutes} minutes`;
+            currentBus = currentBus === 'A' ? 'B' : 'A'; // Alternate between Bus A and Bus B
         }
-    }
 
-    setInterval(updateBusCapacity, 10000);
-
-    // Notification button logic
-    document.getElementById('notifyBtn').addEventListener('click', function() {
-        alert("You will be notified when the bus arrives.");
-    });
+        setInterval(updateETA, 5000);
     </script>
-    
-    </main>
-    
-
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js">
-    // Simulate real-time bus capacity updates
-    function updateBusCapacity() {
-        const capacity = Math.floor(Math.random() * 100) + 1;
-        document.getElementById('busCapacity').innerText = capacity + '%';
-
-        if (capacity > 80) {
-            alert("Bus is nearly full! Please prepare accordingly.");
-        }
-    }
-
-    setInterval(updateBusCapacity, 10000);
-
-    // Notification button logic
-    document.getElementById('notifyBtn').addEventListener('click', function() {
-        alert("You will be notified when the bus arrives.");
-    });
-    </script>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js">
-    // Simulate real-time bus capacity updates
-    function updateBusCapacity() {
-        const capacity = Math.floor(Math.random() * 100) + 1;
-        document.getElementById('busCapacity').innerText = capacity + '%';
-
-        if (capacity > 80) {
-            alert("Bus is nearly full! Please prepare accordingly.");
-        }
-    }
-
-    setInterval(updateBusCapacity, 10000);
-
-    // Notification button logic
-    document.getElementById('notifyBtn').addEventListener('click', function() {
-        alert("You will be notified when the bus arrives.");
-    });
-    </script>
-    
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js">
-    // Simulate real-time bus capacity updates
-    function updateBusCapacity() {
-        const capacity = Math.floor(Math.random() * 100) + 1;
-        document.getElementById('busCapacity').innerText = capacity + '%';
-
-        if (capacity > 80) {
-            alert("Bus is nearly full! Please prepare accordingly.");
-        }
-    }
-
-    setInterval(updateBusCapacity, 10000);
-
-    // Notification button logic
-    document.getElementById('notifyBtn').addEventListener('click', function() {
-        alert("You will be notified when the bus arrives.");
-    });
-    </script>
-    
-    <script>
-        // Function to generate random bus statuses
-        function getRandomStatus() {
-            const statuses = [
-                "Bus arriving at stop 3 in 2 minutes.",
-                "Bus is delayed, arriving in 5 minutes.",
-                "Bus at stop 5, next stop in 3 minutes.",
-                "Bus has left the campus, next stop Walmart.",
-                "Bus arriving at Hotel in 4 minutes."
-            ];
-            return statuses[Math.floor(Math.random() * statuses.length)];
-        }
-
-        // Function to update the bus status every 5 seconds
-        function updateBusStatus() {
-            const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = getRandomStatus();
-        }
-
-        // Initial status update
-        updateBusStatus();
-
-        // Update bus status every 5 seconds
-        setInterval(updateBusStatus, 5000);
-    
-    // Simulate real-time bus capacity updates
-    function updateBusCapacity() {
-        const capacity = Math.floor(Math.random() * 100) + 1;
-        document.getElementById('busCapacity').innerText = capacity + '%';
-
-        if (capacity > 80) {
-            alert("Bus is nearly full! Please prepare accordingly.");
-        }
-    }
-
-    setInterval(updateBusCapacity, 10000);
-
-    // Notification button logic
-    document.getElementById('notifyBtn').addEventListener('click', function() {
-        alert("You will be notified when the bus arrives.");
-    });
-    </script>
-    
 </body>
 
 </html>
