@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,6 @@
             color: #ffffff;
             overflow-y: auto;
         }
-
         header {
             background-color: #000000;
             color: #f2af29;
@@ -24,21 +23,18 @@
             text-align: center;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
         }
-
         #headerLogo {
             width: 100px;
             display: block;
             margin: 10px auto;
             filter: drop-shadow(2px 4px 6px #000000);
         }
-
         .container {
             padding: 20px;
             text-align: center;
             max-width: 1200px;
             margin: 0 auto;
         }
-
         button {
             margin: 10px;
             padding: 15px 30px;
@@ -53,12 +49,10 @@
             transition: background 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
         }
-
         button:hover {
             background-color: #63d729;
             box-shadow: 0px 0px 15px #63d729, 0px 0px 25px #63d729;
         }
-
         section {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
@@ -66,17 +60,14 @@
             padding: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
         }
-
         h2 {
             color: #f2af29;
             text-transform: uppercase;
             font-weight: 700;
         }
-
         #google_translate_element {
             margin: 20px 0;
         }
-
         #output {
             margin-top: 20px;
             padding: 20px;
@@ -88,13 +79,11 @@
             color: #63d729;
             box-shadow: 0px 0px 15px #f2af29, 0px 0px 30px #63d729;
         }
-
         #eta {
             margin-top: 10px;
             font-size: 16px;
             color: #f2af29;
         }
-
         footer {
             margin-top: 20px;
             text-align: center;
@@ -103,49 +92,125 @@
             color: #f2af29;
             box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.6);
         }
+        .progress-container {
+            margin: 20px 0;
+            width: 100%;
+            height: 20px;
+            background-color: #474747;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #f2af29;
+            width: 0;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+            position: relative;
+        }
+        .bullet-point {
+            position: absolute;
+            top: -5px;
+            background-color: #474747; /* Default color */
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-left: -7.5px;
+            z-index: 1;
+            transition: background-color 0.5s ease;
+        }
+        .highlighted {
+            background-color: #63d729; /* Highlighted color */
+        }
+        .bus-stop-text {
+            position: absolute;
+            top: 30px;
+            font-size: 14px;
+            color: #f2af29;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+        #busStop {
+            margin-top: 40px; /* Add more space around the Next Stop text */
+            padding: 20px;
+            font-size: 18px;
+            color: #f2af29;
+            text-align: center;
+            background-color: #474747;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
     </style>
 </head>
-
 <body>
     <header>
         <h1>Campus Shuttle Tracking</h1>
         <img src="https://i.ibb.co/SN2M4v7/spartans-hellment.png" alt="Spartans Logo" id="headerLogo">
     </header>
     <main class="container">
-        <!-- Bus Status Section -->
         <section id="statusSection">
             <h2>Bus Status</h2>
-            <p id="eta">Estimated Time of Arrival (Bus A): Calculating...</p>
+            <p id="eta">Estimated Time of Arrival (Bus): Calculating...</p>
         </section>
 
-        <!-- Bus Schedule Section -->
+        <section id="progressSection">
+            <h2>Bus Progress</h2>
+            <div>
+                <p>Bus Progress</p>
+                <div class="progress-container">
+                    <div id="busProgress" class="progress-bar"></div>
+                    <!-- Bullet points are now part of the progress bar -->
+                    <div class="bullet-point" style="left: 20%;"></div>
+                    <div class="bullet-point" style="left: 40%;"></div>
+                    <div class="bullet-point" style="left: 60%;"></div>
+                    <div class="bullet-point" style="left: 80%;"></div>
+                    <div class="bullet-point" style="left: 100%;"></div>
+                    <!-- Bus stops displayed at each bullet point -->
+                    <div class="bus-stop-text" style="left: 20%;">Robinson Tech</div>
+                    <div class="bus-stop-text" style="left: 40%;">Brown Hall</div>
+                    <div class="bus-stop-text" style="left: 60%;">Spartan Station</div>
+                    <div class="bus-stop-text" style="left: 80%;">Fine Arts Building</div>
+                    <div class="bus-stop-text" style="left: 100%;">Walmart</div>
+                </div>
+                <p id="busStop">Next Stop: Robinson Tech</p>
+            </div>
+        </section>
+
         <section id="scheduleSection">
             <h2>Bus Schedule</h2>
             <button id="scheduleBtn">Bus Schedule</button>
         </section>
 
-        <!-- Routes Section -->
         <section id="routesSection">
             <h2>Bus Routes</h2>
             <button id="routesBtn">Campus Map</button>
         </section>
 
-        <!-- Output Section -->
         <div id="output">Loading bus status...</div>
 
-        <!-- Leaflet Map Section -->
         <section id="mapSection">
             <h2>Live Bus Location</h2>
             <div id="map" style="height: 400px;"></div>
         </section>
-    </main>
+    
+        <section id="routesSection">
+            <h2>On Campus Bus Route</h2>
+            <div id="routeMapContainer" style="margin-top: 20px;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m40!1m12!1m3!1d3192.7392834456614!2d-76.26478402469466!3d36.84871961496396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m25!3e0!4m3!3m2!1d36.849602499999996!2d-76.2662608!4m3!3m2!1d36.8495974!2d-76.2625116!4m3!3m2!1d36.8479691!2d-76.2589098!4m3!3m2!1d36.846961!2d-76.2575684!4m3!3m2!1d36.8472721!2d-76.26373389999999!4m3!3m2!1d36.8472796!2d-76.266857!5e0!3m2!1sen!2sus!4v1737323485472!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+            </div>
+        </section>
+
+</main>
 
     <footer>
         <h2>Translate Page</h2>
         <div id="google_translate_element"></div>
     </footer>
 
-    <!-- Google Translate Script -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -156,41 +221,77 @@
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <!-- Leaflet Map and ETA Script -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Initialize the map
-        var map = L.map('map').setView([37.548, -77.452], 13); // Coordinates set to Norfolk area
+        var map = L.map('map').setView([37.548, -77.452], 13);
 
-        // Load map tiles from OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Simulate real-time bus tracking with a random bus position
         var busMarker = L.marker([37.548, -77.452]).addTo(map);
 
-        // Function to simulate bus position updates
         function updateBusPosition() {
             var lat = 37.548 + (Math.random() - 0.5) * 0.01;
             var lon = -77.452 + (Math.random() - 0.5) * 0.01;
             busMarker.setLatLng([lat, lon]);
         }
 
-        // Update bus position every 5 seconds
         setInterval(updateBusPosition, 5000);
 
-        // Simulate ETA for Bus A and Bus B
         let currentBus = 'A';
         function updateETA() {
-            const minutes = Math.floor(Math.random() * 10) + 1; // Random ETA between 1-10 minutes
+            const minutes = Math.floor(Math.random() * 10) + 1;
             const etaElement = document.getElementById('eta');
-            etaElement.innerText = `Estimated Time of Arrival (Bus ${currentBus}): ${minutes} minutes`;
-            currentBus = currentBus === 'A' ? 'B' : 'A'; // Alternate between Bus A and Bus B
+            etaElement.innerText = `Estimated Time of Arrival (Bus): ${minutes} minutes`;
         }
 
         setInterval(updateETA, 5000);
-    </script>
-</body>
 
+        let stops = [
+            "Robinson Tech",
+            "Brown Hall",
+            "Spartan Station",
+            "Fine Arts Building",
+            "Walmart"
+        ];
+
+        function updateBusProgress() {
+            const progressBar = document.getElementById("busProgress");
+            const stopText = document.getElementById("busStop");
+            const bulletPoints = document.querySelectorAll('.bullet-point');
+            let progress = 0;
+            let stopIndex = 0;
+            const interval = setInterval(function () {
+                if (progress >= 100) {
+                    progress = 0; // Reset the progress
+                    stopIndex = 0; // Reset the stop index
+                    bulletPoints.forEach(point => point.classList.remove('highlighted')); // Reset the highlight
+                } else {
+                    progress += 20;
+                    progressBar.style.width = progress + '%';
+                    stopText.innerText = `Next Stop: ${stops[stopIndex]}`;
+                    bulletPoints[stopIndex].classList.add('highlighted'); // Highlight the dot
+                    stopIndex = (stopIndex + 1) % stops.length;
+                }
+            }, 2400);
+        }
+
+        setInterval(updateBusProgress, 2400);
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("routesBtn").addEventListener("click", function() {
+                var routeMapContainer = document.getElementById("routeMapContainer");
+                if (routeMapContainer.style.display === "none" || routeMapContainer.style.display === "") {
+                    routeMapContainer.style.display = "block";
+                } else {
+                    routeMapContainer.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
