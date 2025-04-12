@@ -1,22 +1,22 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
 <body>
-    <div class="navbar">
-        <a href="#">Home</a>
-        <a href="#statusSection">Bus Status</a>
-        <a href="#routesSection">Routes</a>
-        <a href="#scheduleSection">Schedule</a>
-    </div>
-    <header>
-    <title>Futuristic Bus Tracking Demo</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+<div class="navbar">
+<a href="#">Home</a>
+<a href="#airtagSection">Add Airtag</a>
+<a href="#routesSection">Routes</a>
+
+</div>
+<header>
+<title>Futuristic Bus Tracking Demo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
         body {
             font-family: 'Orbitron', sans-serif;
             margin: 0;
@@ -200,68 +200,122 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
         }
     </style>
-</head>
+
 <body>
-    <header>
-        <h1>Campus Shuttle Tracking</h1>
-        <img src="https://i.ibb.co/SN2M4v7/spartans-hellment.png" alt="Spartans Logo" id="headerLogo">
-    </header>
-    <main class="container">
-        <section id="statusSection">
-            <h2>Bus Status</h2>
-            <p id="eta">Estimated Time of Arrival (Bus): Calculating...</p>
-        </section>
+<header>
+<h1>Campus Shuttle Tracking</h1>
+<img alt="Spartans Logo" id="headerLogo" src="https://i.ibb.co/SN2M4v7/spartans-hellment.png"/>
+</header>
+</section>
+<section id="progressSection">
+<h1>Bus Progress Bar</h1>
+    <p id="busStop">Next Stop: Robinson Tech</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="busProgress"></div>
+<div style="position: absolute; top: 30px; left: 20%; transform: translateX(-50%); color: #ffe066;">Robinson Tech</div>
+<div style="position: absolute; top: 30px; left: 40%; transform: translateX(-50%); color: #ffe066;">Brown Hall</div>
+<div style="position: absolute; top: 30px; left: 60%; transform: translateX(-50%); color: #ffe066;">Spartan Station</div>
+<div style="position: absolute; top: 30px; left: 80%; transform: translateX(-50%); color: #ffe066;">Fine Arts Building</div>
+<div style="position: absolute; top: 30px; left: 100%; transform: translateX(-100%); color: #ffe066;">Walmart</div>
+        <div class="bullet-point" style="left: 20%;" id="bp0"></div>
+        <div class="bullet-point" style="left: 40%;" id="bp1"></div>
+        <div class="bullet-point" style="left: 60%;" id="bp2"></div>
+        <div class="bullet-point" style="left: 80%;" id="bp3"></div>
+        <div class="bullet-point" style="left: 100%;" id="bp4"></div>
+    </div>
 
-        <section id="progressSection">
-            <h2>Bus Progress</h2>
-            <div>
-                <p>Bus Progress</p>
-                <div class="progress-container">
-                    <div id="busProgress" class="progress-bar"></div>
-                    <!-- Bullet points are now part of the progress bar -->
-                    <div class="bullet-point" style="left: 20%;"></div>
-                    <div class="bullet-point" style="left: 40%;"></div>
-                    <div class="bullet-point" style="left: 60%;"></div>
-                    <div class="bullet-point" style="left: 80%;"></div>
-                    <div class="bullet-point" style="left: 100%;"></div>
-                    <!-- Bus stops displayed at each bullet point -->
-                    <div class="bus-stop-text" style="left: 20%;">Robinson Tech</div>
-                    <div class="bus-stop-text" style="left: 40%;">Brown Hall</div>
-                    <div class="bus-stop-text" style="left: 60%;">Spartan Station</div>
-                    <div class="bus-stop-text" style="left: 80%;">Fine Arts Building</div>
-                    <div class="bus-stop-text" style="left: 100%;">Walmart</div>
-                </div>
-                <p id="busStop">Next Stop: Robinson Tech</p>
-            </div>
-        </section>
+    <script>
+        const stops = [
+            "Robinson Tech",
+            "Brown Hall",
+            "Spartan Station",
+            "Fine Arts Building",
+            "Walmart"
+        ];
+        let progress = 0;
+        let stopIndex = 0;
 
-        <section id="scheduleSection">
-            <h2>Bus Schedule</h2>
-            <button id="scheduleBtn">Bus Schedule</button>
-        </section>
+        function updateProgress() {
+            const progressBar = document.getElementById("busProgress");
+            const stopText = document.getElementById("busStop");
+            const totalStops = stops.length;
+            const bulletPoints = Array.from({ length: totalStops }, (_, i) =>
+                document.getElementById(`bp${i}`)
+            );
 
-        <section id="routesSection">
-            <h2>Bus Routes</h2>
-            <button id="routesBtn">Campus Map</button>
-        </section>
+            if (stopIndex > 0) {
+                bulletPoints[stopIndex - 1].classList.remove("highlighted");
+            } else if (stopIndex === 0 && progress === 0) {
+                bulletPoints[totalStops - 1].classList.remove("highlighted");
+            }
 
-        <div id="output">Loading bus status...</div>
+            bulletPoints[stopIndex].classList.add("highlighted");
 
-        
-<section id="mapSection">
-    <h2>Live Bus Location</h2>
-    <div id="map" style="height: 400px;"></div>
-    <p><a href="https://apps.apple.com/us/app/find-my/id1514844621" target="_blank" style="color: #f2af29; text-decoration: underline;">Add airtag</a></p>
+            progress += 20;
+            progressBar.style.width = progress + "%";
+            stopText.innerText = "Next Stop: " + stops[stopIndex];
+
+            stopIndex = (stopIndex + 1) % totalStops;
+            if (progress >= 100) progress = 0;
+        }
+
+        setInterval(updateProgress, 60000);
+    </script>
 </section>
 
-    </main>
 
-    <footer>
-        <h2>Translate Page</h2>
-        <div id="google_translate_element"></div>
-    </footer>
+<section id="routesSection">
+  <h2>Bus Routes</h2>
+  <div id="mapContainer" style="margin-top: 20px;">
+  <h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">On Campus</h3>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m48!1m12!1m3!1d6385.485009769856!2d-76.26857175746993!3d36.848642474416266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m33!3e0!4m3!3m2!1d36.847216599999996!2d-76.2670876!4m5!1s0x89ba978e172eb89b%3A0xf45fb07a880d9be!2sRobinson%20Technology%20Center%2C%20700%20Park%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849903999999995!2d-76.2663522!4m3!3m2!1d36.8495862!2d-76.2639119!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m3!3m2!1d36.8492556!2d-76.2609078!4m3!3m2!1d36.846669999999996!2d-76.25754429999999!4m3!3m2!1d36.847335699999995!2d-76.2641469!5e0!3m2!1sen!2sus!4v1744390749510!5m2!1sen!2sus" 
+      width="100%" 
+      height="450" 
+      style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
 
-    <script type="text/javascript">
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Hotels</h3>
+<iframe 
+  src="https://www.google.com/maps/embed?pb=!1m64!1m12!1m3!1d51076.138527052964!2d-76.28101216444978!3d36.86022711553164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m49!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba981123477707%3A0x4bfd22d0362cc9cc!2sWyndham%20Garden%20Norfolk%20Downtown!3m2!1d36.8551302!2d-76.2862043!4m5!1s0x89ba968eb60edf41%3A0x9c8814793e5bacdf!2sQuality%20Suites%20Lake%20Wright%20-%20Norfolk%20Airport!3m2!1d36.8776188!2d-76.19469699999999!4m5!1s0x89ba96451492d9ef%3A0xec0c43b91984d6c2!2sHoliday%20Inn%20Express%20%26%20Suites%20Norfolk%E2%80%A6!3m2!1d36.8616683!2d-76.21140969999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744425279889!5m2!1sen!2sus" 
+  width="100%" 
+  height="450" 
+  style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
+  allowfullscreen="" 
+  loading="lazy" 
+  referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
+
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Walmart</h3>
+    
+<iframe src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d25539.760825741243!2d-76.25840437377414!3d36.85516491210365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba9644ad78b2a7%3A0x6b11a9e88b946e09!2sWalmart%20Supercenter%2C%20North%20Military%20Highway%2C%20Norfolk%2C%20VA!3m2!1d36.862952!2d-76.20753359999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744426034692!5m2!1sen!2sus" width="100%" height="450" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" " allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+  </div>
+</section>
+
+<div id="output">Loading bus status...</div>
+
+</section>
+
+<section id="airtagSection">
+<p><a href="https://apps.apple.com/us/app/find-my/id1514844621" target="_blank" style="color: #f2af29; text-decoration: underline;">Add airtag</a></p>
+</p>
+<button onclick="toggleHelp()" style="background-color: transparent; border: 1px solid #f2af29; color: #f2af29; font-size: 14px;">Help</button>
+<div id="helpMessage" style="display:none; margin-top:10px; color: #63d729;">
+  Airtag support is only available for iPhone. Please install the "Find My" app and be near the bus to add an Airtag.
+</div>
+</section>
+
+</main>
+<footer>
+<h2>Translate Page</h2>
+<div id="google_translate_element"></div>
+</footer>
+<script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
@@ -269,10 +323,9 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
+<script>
         var map = L.map('map').setView([37.548, -77.452], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -328,6 +381,445 @@
         }
 
         setInterval(updateBusProgress, 2400);
+
+	function toggleHelp() {
+    const helpDiv = document.getElementById('helpMessage');
+    helpDiv.style.display = helpDiv.style.display === 'none' ? 'block' : 'none';
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mapBtn = document.getElementById("routesBtn");
+    const mapDiv = document.getElementById("mapContainer");
+
+    if (mapBtn && mapDiv) {
+        mapBtn.addEventListener("click", function () {
+            if (mapDiv.style.display === "none" || mapDiv.style.display === "") {
+                mapDiv.style.display = "block";
+            } else {
+                mapDiv.style.display = "none";
+            }
+        });
+    }
+});
+
+
+
     </script>
+</body>
+
+
+</body>
+</html><!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+</head>
+<body>
+<div class="navbar">
+<a href="#">Home</a>
+<a href="#airtagSection">Add Airtag</a>
+<a href="#routesSection">Routes</a>
+
+</div>
+<header>
+<title>Futuristic Bus Tracking Demo</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000, #474747);
+            color: #ffffff;
+            overflow-y: auto;
+        }
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .navbar a {
+            color: #f2af29;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+            font-size: 18px;
+            text-transform: uppercase;
+            transition: color 0.3s ease, background 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #000000;
+            background: #f2af29;
+            border-radius: 5px;
+        }
+        header {
+            background-color: #000000;
+            color: #f2af29;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        #headerLogo {
+            width: 100px;
+            display: block;
+            margin: 10px auto;
+            filter: drop-shadow(2px 4px 6px #000000);
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: #000000;
+            color: #f2af29;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        #headerLogo {
+            width: 100px;
+            display: block;
+            margin: 10px auto;
+            filter: drop-shadow(2px 4px 6px #000000);
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #f2af29;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000000;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        button:hover {
+            background-color: #63d729;
+            box-shadow: 0px 0px 15px #63d729, 0px 0px 25px #63d729;
+        }
+        section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        h2 {
+            color: #f2af29;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        #google_translate_element {
+            margin: 20px 0;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #f2af29;
+            border-radius: 5px;
+            min-height: 100px;
+            font-size: 18px;
+            background-color: #000000;
+            color: #63d729;
+            box-shadow: 0px 0px 15px #f2af29, 0px 0px 30px #63d729;
+        }
+        #eta {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #f2af29;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            background-color: #000000;
+            padding: 20px;
+            color: #f2af29;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.6);
+        }
+        .progress-container {
+            margin: 20px 0;
+            width: 100%;
+            height: 20px;
+            background-color: #474747;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #f2af29;
+            width: 0;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+            position: relative;
+        }
+        .bullet-point {
+            position: absolute;
+            top: -5px;
+            background-color: #474747; /* Default color */
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-left: -7.5px;
+            z-index: 1;
+            transition: background-color 0.5s ease;
+        }
+        .highlighted {
+            background-color: #63d729; /* Highlighted color */
+        }
+        .bus-stop-text {
+            position: absolute;
+            top: 30px;
+            font-size: 14px;
+            color: #f2af29;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+        #busStop {
+            margin-top: 40px; /* Add more space around the Next Stop text */
+            padding: 20px;
+            font-size: 18px;
+            color: #f2af29;
+            text-align: center;
+            background-color: #474747;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+
+<body>
+<header>
+<h1>Campus Shuttle Tracking</h1>
+<img alt="Spartans Logo" id="headerLogo" src="https://i.ibb.co/SN2M4v7/spartans-hellment.png"/>
+</header>
+</section>
+<section id="progressSection">
+<h1>Bus Progress Bar</h1>
+    <p id="busStop">Next Stop: Robinson Tech</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="busProgress"></div>
+<div style="position: absolute; top: 30px; left: 20%; transform: translateX(-50%); color: #ffe066;">Robinson Tech</div>
+<div style="position: absolute; top: 30px; left: 40%; transform: translateX(-50%); color: #ffe066;">Brown Hall</div>
+<div style="position: absolute; top: 30px; left: 60%; transform: translateX(-50%); color: #ffe066;">Spartan Station</div>
+<div style="position: absolute; top: 30px; left: 80%; transform: translateX(-50%); color: #ffe066;">Fine Arts Building</div>
+<div style="position: absolute; top: 30px; left: 100%; transform: translateX(-100%); color: #ffe066;">Walmart</div>
+        <div class="bullet-point" style="left: 20%;" id="bp0"></div>
+        <div class="bullet-point" style="left: 40%;" id="bp1"></div>
+        <div class="bullet-point" style="left: 60%;" id="bp2"></div>
+        <div class="bullet-point" style="left: 80%;" id="bp3"></div>
+        <div class="bullet-point" style="left: 100%;" id="bp4"></div>
+    </div>
+
+    <script>
+        const stops = [
+            "Robinson Tech",
+            "Brown Hall",
+            "Spartan Station",
+            "Fine Arts Building",
+            "Walmart"
+        ];
+        let progress = 0;
+        let stopIndex = 0;
+
+        function updateProgress() {
+            const progressBar = document.getElementById("busProgress");
+            const stopText = document.getElementById("busStop");
+            const totalStops = stops.length;
+            const bulletPoints = Array.from({ length: totalStops }, (_, i) =>
+                document.getElementById(`bp${i}`)
+            );
+
+            if (stopIndex > 0) {
+                bulletPoints[stopIndex - 1].classList.remove("highlighted");
+            } else if (stopIndex === 0 && progress === 0) {
+                bulletPoints[totalStops - 1].classList.remove("highlighted");
+            }
+
+            bulletPoints[stopIndex].classList.add("highlighted");
+
+            progress += 20;
+            progressBar.style.width = progress + "%";
+            stopText.innerText = "Next Stop: " + stops[stopIndex];
+
+            stopIndex = (stopIndex + 1) % totalStops;
+            if (progress >= 100) progress = 0;
+        }
+
+        setInterval(updateProgress, 60000);
+    </script>
+</section>
+
+
+<section id="routesSection">
+  <h2>Bus Routes</h2>
+  <div id="mapContainer" style="margin-top: 20px;">
+  <h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">On Campus</h3>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m48!1m12!1m3!1d6385.485009769856!2d-76.26857175746993!3d36.848642474416266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m33!3e0!4m3!3m2!1d36.847216599999996!2d-76.2670876!4m5!1s0x89ba978e172eb89b%3A0xf45fb07a880d9be!2sRobinson%20Technology%20Center%2C%20700%20Park%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849903999999995!2d-76.2663522!4m3!3m2!1d36.8495862!2d-76.2639119!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m3!3m2!1d36.8492556!2d-76.2609078!4m3!3m2!1d36.846669999999996!2d-76.25754429999999!4m3!3m2!1d36.847335699999995!2d-76.2641469!5e0!3m2!1sen!2sus!4v1744390749510!5m2!1sen!2sus" 
+      width="100%" 
+      height="450" 
+      style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Hotels</h3>
+<iframe 
+  src="https://www.google.com/maps/embed?pb=!1m64!1m12!1m3!1d51076.138527052964!2d-76.28101216444978!3d36.86022711553164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m49!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba981123477707%3A0x4bfd22d0362cc9cc!2sWyndham%20Garden%20Norfolk%20Downtown!3m2!1d36.8551302!2d-76.2862043!4m5!1s0x89ba968eb60edf41%3A0x9c8814793e5bacdf!2sQuality%20Suites%20Lake%20Wright%20-%20Norfolk%20Airport!3m2!1d36.8776188!2d-76.19469699999999!4m5!1s0x89ba96451492d9ef%3A0xec0c43b91984d6c2!2sHoliday%20Inn%20Express%20%26%20Suites%20Norfolk%E2%80%A6!3m2!1d36.8616683!2d-76.21140969999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744425279889!5m2!1sen!2sus" 
+  width="100%" 
+  height="450" 
+  style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
+  allowfullscreen="" 
+  loading="lazy" 
+  referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
+
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Walmart</h3>
+    
+<iframe src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d25539.760825741243!2d-76.25840437377414!3d36.85516491210365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba9644ad78b2a7%3A0x6b11a9e88b946e09!2sWalmart%20Supercenter%2C%20North%20Military%20Highway%2C%20Norfolk%2C%20VA!3m2!1d36.862952!2d-76.20753359999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744426034692!5m2!1sen!2sus" width="100%" height="450" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" " allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+  </div>
+</section>
+
+<div id="output">Loading bus status...</div>
+
+</section>
+
+<section id="airtagSection">
+<p><a href="https://apps.apple.com/us/app/find-my/id1514844621" target="_blank" style="color: #f2af29; text-decoration: underline;">Add airtag</a></p>
+</p>
+<button onclick="toggleHelp()" style="background-color: transparent; border: 1px solid #f2af29; color: #f2af29; font-size: 14px;">Help</button>
+<div id="helpMessage" style="display:none; margin-top:10px; color: #63d729;">
+  Airtag support is only available for iPhone. Please install the "Find My" app and be near the bus to add an Airtag.
+</div>
+</section>
+
+</main>
+<footer>
+<h2>Translate Page</h2>
+<div id="google_translate_element"></div>
+</footer>
+<script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
+
+<script>
+        var map = L.map('map').setView([37.548, -77.452], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var busMarker = L.marker([37.548, -77.452]).addTo(map);
+
+        function updateBusPosition() {
+            var lat = 37.548 + (Math.random() - 0.5) * 0.01;
+            var lon = -77.452 + (Math.random() - 0.5) * 0.01;
+            busMarker.setLatLng([lat, lon]);
+        }
+
+        setInterval(updateBusPosition, 5000);
+
+        let currentBus = 'A';
+        function updateETA() {
+            const minutes = Math.floor(Math.random() * 10) + 1;
+            const etaElement = document.getElementById('eta');
+            etaElement.innerText = `Estimated Time of Arrival (Bus): ${minutes} minutes`;
+        }
+
+        setInterval(updateETA, 5000);
+
+        let stops = [
+            "Robinson Tech",
+            "Brown Hall",
+            "Spartan Station",
+            "Fine Arts Building",
+            "Walmart"
+        ];
+
+        function updateBusProgress() {
+            const progressBar = document.getElementById("busProgress");
+            const stopText = document.getElementById("busStop");
+            const bulletPoints = document.querySelectorAll('.bullet-point');
+            let progress = 0;
+            let stopIndex = 0;
+            const interval = setInterval(function () {
+                if (progress >= 100) {
+                    progress = 0; // Reset the progress
+                    stopIndex = 0; // Reset the stop index
+                    bulletPoints.forEach(point => point.classList.remove('highlighted')); // Reset the highlight
+                } else {
+                    progress += 20;
+                    progressBar.style.width = progress + '%';
+                    stopText.innerText = `Next Stop: ${stops[stopIndex]}`;
+                    bulletPoints[stopIndex].classList.add('highlighted'); // Highlight the dot
+                    stopIndex = (stopIndex + 1) % stops.length;
+                }
+            }, 2400);
+        }
+
+        setInterval(updateBusProgress, 2400);
+
+	function toggleHelp() {
+    const helpDiv = document.getElementById('helpMessage');
+    helpDiv.style.display = helpDiv.style.display === 'none' ? 'block' : 'none';
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const mapBtn = document.getElementById("routesBtn");
+    const mapDiv = document.getElementById("mapContainer");
+
+    if (mapBtn && mapDiv) {
+        mapBtn.addEventListener("click", function () {
+            if (mapDiv.style.display === "none" || mapDiv.style.display === "") {
+                mapDiv.style.display = "block";
+            } else {
+                mapDiv.style.display = "none";
+            }
+        });
+    }
+});
+
+
+
+    </script>
+</body>
+
+
 </body>
 </html>
