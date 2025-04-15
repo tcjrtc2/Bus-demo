@@ -10,11 +10,10 @@
 <a href="#">Home</a>
 <a href="#airtagSection">Add Airtag</a>
 <a href="#routesSection">Routes</a>
-
+<a href="#weatherSection">Weather</a>
 </div>
 <header>
 <title>Futuristic Bus Tracking Demo</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
         body {
@@ -200,31 +199,28 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6);
         }
     </style>
-
 <body>
 <header>
 <h1>Campus Shuttle Tracking</h1>
 <img alt="Spartans Logo" id="headerLogo" src="https://i.ibb.co/SN2M4v7/spartans-hellment.png"/>
 </header>
-</section>
 <section id="progressSection">
 <h1>Bus Progress Bar</h1>
-    <p id="busStop">Next Stop: Robinson Tech</p>
-    <div class="progress-container">
-        <div class="progress-bar" id="busProgress"></div>
+<p id="busStop">Next Stop: Robinson Tech</p>
+<div class="progress-container">
+<div class="progress-bar" id="busProgress"></div>
 <div style="position: absolute; top: 30px; left: 20%; transform: translateX(-50%); color: #ffe066;">Robinson Tech</div>
 <div style="position: absolute; top: 30px; left: 40%; transform: translateX(-50%); color: #ffe066;">Brown Hall</div>
 <div style="position: absolute; top: 30px; left: 60%; transform: translateX(-50%); color: #ffe066;">Spartan Station</div>
 <div style="position: absolute; top: 30px; left: 80%; transform: translateX(-50%); color: #ffe066;">Fine Arts Building</div>
 <div style="position: absolute; top: 30px; left: 100%; transform: translateX(-100%); color: #ffe066;">Walmart</div>
-        <div class="bullet-point" style="left: 20%;" id="bp0"></div>
-        <div class="bullet-point" style="left: 40%;" id="bp1"></div>
-        <div class="bullet-point" style="left: 60%;" id="bp2"></div>
-        <div class="bullet-point" style="left: 80%;" id="bp3"></div>
-        <div class="bullet-point" style="left: 100%;" id="bp4"></div>
-    </div>
-
-    <script>
+<div class="bullet-point" id="bp0" style="left: 20%;"></div>
+<div class="bullet-point" id="bp1" style="left: 40%;"></div>
+<div class="bullet-point" id="bp2" style="left: 60%;"></div>
+<div class="bullet-point" id="bp3" style="left: 80%;"></div>
+<div class="bullet-point" id="bp4" style="left: 100%;"></div>
+</div>
+<script>
         const stops = [
             "Robinson Tech",
             "Brown Hall",
@@ -262,55 +258,69 @@
         setInterval(updateProgress, 60000);
     </script>
 </section>
-
-
 <section id="routesSection">
-  <h2>Bus Routes</h2>
-  <div id="mapContainer" style="margin-top: 20px;">
-  <h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">On Campus</h3>
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m48!1m12!1m3!1d6385.485009769856!2d-76.26857175746993!3d36.848642474416266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m33!3e0!4m3!3m2!1d36.847216599999996!2d-76.2670876!4m5!1s0x89ba978e172eb89b%3A0xf45fb07a880d9be!2sRobinson%20Technology%20Center%2C%20700%20Park%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849903999999995!2d-76.2663522!4m3!3m2!1d36.8495862!2d-76.2639119!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m3!3m2!1d36.8492556!2d-76.2609078!4m3!3m2!1d36.846669999999996!2d-76.25754429999999!4m3!3m2!1d36.847335699999995!2d-76.2641469!5e0!3m2!1sen!2sus!4v1744390749510!5m2!1sen!2sus" 
-      width="100%" 
-      height="450" 
-      style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
-      allowfullscreen="" 
-      loading="lazy" 
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-
-<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Hotels</h3>
-<iframe 
-  src="https://www.google.com/maps/embed?pb=!1m64!1m12!1m3!1d51076.138527052964!2d-76.28101216444978!3d36.86022711553164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m49!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba981123477707%3A0x4bfd22d0362cc9cc!2sWyndham%20Garden%20Norfolk%20Downtown!3m2!1d36.8551302!2d-76.2862043!4m5!1s0x89ba968eb60edf41%3A0x9c8814793e5bacdf!2sQuality%20Suites%20Lake%20Wright%20-%20Norfolk%20Airport!3m2!1d36.8776188!2d-76.19469699999999!4m5!1s0x89ba96451492d9ef%3A0xec0c43b91984d6c2!2sHoliday%20Inn%20Express%20%26%20Suites%20Norfolk%E2%80%A6!3m2!1d36.8616683!2d-76.21140969999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744425279889!5m2!1sen!2sus" 
-  width="100%" 
-  height="450" 
-  style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" 
-  allowfullscreen="" 
-  loading="lazy" 
-  referrerpolicy="no-referrer-when-downgrade">
+<h2>Bus Routes</h2>
+<div id="mapContainer" style="margin-top: 20px;">
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">On Campus</h3>
+<iframe allowfullscreen="" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m48!1m12!1m3!1d6385.485009769856!2d-76.26857175746993!3d36.848642474416266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m33!3e0!4m3!3m2!1d36.847216599999996!2d-76.2670876!4m5!1s0x89ba978e172eb89b%3A0xf45fb07a880d9be!2sRobinson%20Technology%20Center%2C%20700%20Park%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849903999999995!2d-76.2663522!4m3!3m2!1d36.8495862!2d-76.2639119!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m3!3m2!1d36.8492556!2d-76.2609078!4m3!3m2!1d36.846669999999996!2d-76.25754429999999!4m3!3m2!1d36.847335699999995!2d-76.2641469!5e0!3m2!1sen!2sus!4v1744390749510!5m2!1sen!2sus" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" width="100%">
 </iframe>
-
-
+<h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Hotels</h3>
+<iframe allowfullscreen="" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m64!1m12!1m3!1d51076.138527052964!2d-76.28101216444978!3d36.86022711553164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m49!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba981123477707%3A0x4bfd22d0362cc9cc!2sWyndham%20Garden%20Norfolk%20Downtown!3m2!1d36.8551302!2d-76.2862043!4m5!1s0x89ba968eb60edf41%3A0x9c8814793e5bacdf!2sQuality%20Suites%20Lake%20Wright%20-%20Norfolk%20Airport!3m2!1d36.8776188!2d-76.19469699999999!4m5!1s0x89ba96451492d9ef%3A0xec0c43b91984d6c2!2sHoliday%20Inn%20Express%20%26%20Suites%20Norfolk%E2%80%A6!3m2!1d36.8616683!2d-76.21140969999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744425279889!5m2!1sen!2sus" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" width="100%">
+</iframe>
 <h3 style="color: #f2af29; font-weight: bold; margin-bottom: 10px;">Walmart</h3>
-    
-<iframe src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d25539.760825741243!2d-76.25840437377414!3d36.85516491210365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba9644ad78b2a7%3A0x6b11a9e88b946e09!2sWalmart%20Supercenter%2C%20North%20Military%20Highway%2C%20Norfolk%2C%20VA!3m2!1d36.862952!2d-76.20753359999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744426034692!5m2!1sen!2sus" width="100%" height="450" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" " allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-  </div>
-</section>
-
-<div id="output">Loading bus status...</div>
-
-</section>
-
-<section id="airtagSection">
-<p><a href="https://apps.apple.com/us/app/find-my/id1514844621" target="_blank" style="color: #f2af29; text-decoration: underline;">Add airtag</a></p>
-</p>
-<button onclick="toggleHelp()" style="background-color: transparent; border: 1px solid #f2af29; color: #f2af29; font-size: 14px;">Help</button>
-<div id="helpMessage" style="display:none; margin-top:10px; color: #63d729;">
-  Airtag support is only available for iPhone. Please install the "Find My" app and be near the bus to add an Airtag.
+<iframe "="" allowfullscreen="" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d25539.760825741243!2d-76.25840437377414!3d36.85516491210365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba9644ad78b2a7%3A0x6b11a9e88b946e09!2sWalmart%20Supercenter%2C%20North%20Military%20Highway%2C%20Norfolk%2C%20VA!3m2!1d36.862952!2d-76.20753359999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744426034692!5m2!1sen!2sus" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" width="100%"></iframe>
 </div>
 </section>
+<div id="output">Loading bus status...</div>
+<section id="airtagSection">
+<p>
+<a href="https://apps.apple.com/us/app/find-my/id1514844621" style="color: #f2af29; text-decoration: underline;" target="_blank">Add airtag</a>
+</p>
+<button id="helpBtn" style="background-color: transparent; border: 1px solid #f2af29; color: #f2af29; font-size: 14px;">Help</button>
+<div id="helpMessage" style="display: block; margin-top:10px; padding: 10px; background-color: #333; color: #63d729; border: 1px solid #63d729; border-radius: 5px;">
+    Airtag support is only available for iPhone. Please install the "Find My" app and be near the bus to add an Airtag.
+  </div>
+<div id="chatbotContainer" style="display:none; margin-top:15px; padding:15px; background-color:#222; border-radius:10px; border:1px solid #63d729; box-shadow: 0px 0px 15px #63d729;">
+<div id="chatLog" style="max-height: 200px; overflow-y: auto; background: #111; padding: 10px; border-radius: 5px; color: #f2af29;"></div>
+<input id="userInput" placeholder="Type your question..." style="margin-top:10px; width: 80%; padding: 10px; border-radius: 5px; border: none;" type="text"/>
+<button onclick="sendMessage()" style="padding: 10px 15px; background-color: #63d729; color: #000; border: none; border-radius: 5px; margin-left: 5px;">Send</button>
+</div>
+</section>
+<section id="weatherSection">
+<h2>Weather Forecast</h2>
+<div id="weatherData" style="margin-top: 20px; background: #1f1f1f; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px #63d729;">
+<p>Loading weather data...</p>
+</div>
+</section>
+<script>
+  async function fetchWeather() {
+    try {
+      const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=36.846161&longitude=-76.285912&daily=temperature_2m_min,temperature_2m_max&hourly=temperature_2m,precipitation,precipitation_probability,relative_humidity_2m&current=is_day,wind_speed_10m&timezone=America%2FNew_York&temperature_unit=fahrenheit&wind_speed_unit=mph");
+      const data = await response.json();
 
-</main>
+      const currentWind = data.current.wind_speed_10m + " mph";
+      const todayMin = data.daily.temperature_2m_min[0] + "°F";
+      const todayMax = data.daily.temperature_2m_max[0] + "°F";
+      const hour = new Date().getHours();
+      const tempNow = data.hourly.temperature_2m[hour] + "°F";
+      const humidityNow = data.hourly.relative_humidity_2m[hour] + "%";
+      const precipitationNow = data.hourly.precipitation[hour] + " mm";
+      const precipitationProb = data.hourly.precipitation_probability[hour] + "%";
+
+      document.getElementById("weatherData").innerHTML = `
+        <p><strong>Current Temp:</strong> ${tempNow}</p>
+        <p><strong>Wind Speed:</strong> ${currentWind}</p>
+        <p><strong>Humidity:</strong> ${humidityNow}</p>
+        <p><strong>Precipitation:</strong> ${precipitationNow} (Chance: ${precipitationProb})</p>
+        <p><strong>Today's Low:</strong> ${todayMin}, <strong>High:</strong> ${todayMax}</p>
+      `;
+    } catch (error) {
+      document.getElementById("weatherData").innerHTML = "<p style='color:red;'>Failed to load weather data.</p>";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", fetchWeather);
+</script>
 <footer>
 <h2>Translate Page</h2>
 <div id="google_translate_element"></div>
@@ -324,90 +334,123 @@
         }
     </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-
 <script>
-        var map = L.map('map').setView([37.548, -77.452], 13);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        var busMarker = L.marker([37.548, -77.452]).addTo(map);
-
-        function updateBusPosition() {
-            var lat = 37.548 + (Math.random() - 0.5) * 0.01;
-            var lon = -77.452 + (Math.random() - 0.5) * 0.01;
-            busMarker.setLatLng([lat, lon]);
-        }
-
-        setInterval(updateBusPosition, 5000);
-
-        let currentBus = 'A';
-        function updateETA() {
-            const minutes = Math.floor(Math.random() * 10) + 1;
-            const etaElement = document.getElementById('eta');
-            etaElement.innerText = `Estimated Time of Arrival (Bus): ${minutes} minutes`;
-        }
-
-        setInterval(updateETA, 5000);
-
-        let stops = [
-            "Robinson Tech",
-            "Brown Hall",
-            "Spartan Station",
-            "Fine Arts Building",
-            "Walmart"
-        ];
-
         function updateBusProgress() {
             const progressBar = document.getElementById("busProgress");
             const stopText = document.getElementById("busStop");
             const bulletPoints = document.querySelectorAll('.bullet-point');
             let progress = 0;
             let stopIndex = 0;
-            const interval = setInterval(function () {
-                if (progress >= 100) {
-                    progress = 0; // Reset the progress
-                    stopIndex = 0; // Reset the stop index
-                    bulletPoints.forEach(point => point.classList.remove('highlighted')); // Reset the highlight
-                } else {
-                    progress += 20;
+            let targetProgress = 20;
+
+            function animateProgress() {
+                if (progress < targetProgress) {
+                    progress += 1;
                     progressBar.style.width = progress + '%';
+                    requestAnimationFrame(animateProgress);
+                } else {
+                    bulletPoints.forEach(point => point.classList.remove('highlighted'));
+                    bulletPoints[stopIndex].classList.add('highlighted');
                     stopText.innerText = `Next Stop: ${stops[stopIndex]}`;
-                    bulletPoints[stopIndex].classList.add('highlighted'); // Highlight the dot
                     stopIndex = (stopIndex + 1) % stops.length;
+                    targetProgress += 20;
+                    if (targetProgress > 100) {
+                        targetProgress = 20;
+                        progress = 0;
+                        progressBar.style.width = '0%';
+                    }
+                    setTimeout(() => requestAnimationFrame(animateProgress), 60000);
                 }
-            }, 2400);
+            }
+
+            requestAnimationFrame(animateProgress);
         }
 
-        setInterval(updateBusProgress, 2400);
-
-	function toggleHelp() {
-    const helpDiv = document.getElementById('helpMessage');
-    helpDiv.style.display = helpDiv.style.display === 'none' ? 'block' : 'none';
-}
-
-
+        updateBusProgress();
+        </script>
+<script>
 document.addEventListener("DOMContentLoaded", function () {
-    const mapBtn = document.getElementById("routesBtn");
-    const mapDiv = document.getElementById("mapContainer");
+    const helpBtn = document.getElementById("helpBtn");
+    const helpDiv = document.getElementById("helpMessage");
 
-    if (mapBtn && mapDiv) {
-        mapBtn.addEventListener("click", function () {
-            if (mapDiv.style.display === "none" || mapDiv.style.display === "") {
-                mapDiv.style.display = "block";
-            } else {
-                mapDiv.style.display = "none";
-            }
-        });
-    }
+    helpBtn.addEventListener("click", function () {
+        if (helpDiv.style.display === "none" || helpDiv.style.display === "") {
+            helpDiv.style.display = "block";
+        } else {
+            helpDiv.style.display = "none";
+        }
+    });
 });
-
-
-
-    </script>
+</script>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const helpBtn = document.getElementById("helpBtn");
+    const helpDiv = document.getElementById("helpMessage");
+
+    helpBtn.addEventListener("click", function () {
+        if (helpDiv.style.display === "none" || helpDiv.style.display === "") {
+            helpDiv.style.display = "block";
+        } else {
+            helpDiv.style.display = "none";
+        }
+    });
+});
+</script>
+</header>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const helpBtn = document.getElementById("helpBtn");
+    const chatContainer = document.getElementById("chatbotContainer");
+
+    helpBtn.addEventListener("click", function () {
+        if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+            chatContainer.style.display = "block";
+        } else {
+            chatContainer.style.display = "none";
+        }
+    });
+
+    window.sendMessage = function () {
+        const userInput = document.getElementById("userInput");
+        const chatLog = document.getElementById("chatLog");
+        const message = userInput.value.trim();
+        if (message === "") return;
+
+        const userMessage = document.createElement("p");
+        userMessage.style.color = "#f2af29";
+        userMessage.innerHTML = "<strong>You:</strong> " + message;
+        chatLog.appendChild(userMessage);
+
+        const botMessage = document.createElement("p");
+        botMessage.style.color = "#63d729";
+
+        const msgLower = message.toLowerCase();
+        let response = "";
+
+        if (msgLower.includes("route")) {
+            response = "You can view all bus routes under the 'Routes' section in the navbar.";
+        } else if (msgLower.includes("airtag")) {
+            response = "Airtag setup is only available for iPhones. Use the 'Find My' app and be near the bus.";
+        } else if (msgLower.includes("weather")) {
+            response = "Weather updates are shown in the 'Weather' section. We include temperature, wind, and humidity.";
+        } else if (msgLower.includes("eta")) {
+            response = "Estimated arrival times are updated in real-time and shown below the progress bar.";
+        } else if (msgLower.includes("setup")) {
+            response = "To setup an Airtag: download the 'Find My' app on your iPhone, get near the bus, and select your Airtag from the list.";
+        } else {
+            response = "Hmm, I didn't catch that. Try asking about 'routes', 'airtag', 'weather', 'ETA', or 'setup'.";
+        }
+
+        botMessage.innerHTML = "<strong>Helper Bot:</strong> " + response;
+        chatLog.appendChild(botMessage);
+
+        chatLog.scrollTop = chatLog.scrollHeight;
+        userInput.value = "";
+    };
+});
+</script>
 </body>
 </html>
