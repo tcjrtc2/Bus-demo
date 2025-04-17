@@ -271,7 +271,7 @@
 <iframe "="" allowfullscreen="" height="450" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d25539.760825741243!2d-76.25840437377414!3d36.85516491210365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x89ba97e571050455%3A0xebc8ab76ae7de8c0!2sCharles%20H.%20Smith%2C%20Norfolk%2C%20VA!3m2!1d36.8464771!2d-76.25719!4m5!1s0x89ba97efc7ded12b%3A0xa7a671828ea74059!2sSpartan%20Suites%20Residence%20Hall%2C%202601%20Corprew%20Ave%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.848691599999995!2d-76.2588136!4m5!1s0x89ba97f061b45f65%3A0xe027a3f30e680a1d!2sNSU%20Brown%20Hall%2C%20Norfolk%2C%20VA%2023504!3m2!1d36.849162799999995!2d-76.2622884!4m5!1s0x89ba97f77accf953%3A0xc0838fd42e7435e5!2sBabbette%20B.%20Smith%2C%20South%20Hall%2C%20Norfolk%2C%20VA!3m2!1d36.8492628!2d-76.26747309999999!4m5!1s0x89ba9644ad78b2a7%3A0x6b11a9e88b946e09!2sWalmart%20Supercenter%2C%20North%20Military%20Highway%2C%20Norfolk%2C%20VA!3m2!1d36.862952!2d-76.20753359999999!4m5!1s0x89ba97fa7518408b%3A0xe34dd4f09d8074a1!2s2350%20Presidential%20Parkway%2C%20Norfolk%2C%20VA!3m2!1d36.8480692!2d-76.2638803!5e0!3m2!1sen!2sus!4v1744426034692!5m2!1sen!2sus" style="border:0; box-shadow: 0px 4px 10px rgba(0,0,0,0.5); border-radius: 10px;" width="100%"></iframe>
 </div>
 </section>
-<div id="output">Loading bus status...</div>
+<div id="output" style="margin-top: 20px; padding: 20px; border: 2px solid #f2af29; border-radius: 5px; font-size: 18px; background-color: #000000; color: #63d729; box-shadow: 0px 0px 15px #f2af29, 0px 0px 30px #63d729;">Loading bus status...</div>
 <section id="airtagSection">
 <p>
 <a href="https://apps.apple.com/us/app/find-my/id1514844621" style="color: #f2af29; text-decoration: underline;" target="_blank">Add airtag</a>
@@ -321,6 +321,30 @@
 
   document.addEventListener("DOMContentLoaded", fetchWeather);
 </script>
+
+
+
+<section id="scheduleSection" style="text-align: center;">
+  <h2>Shuttle Schedule</h2>
+  <button onclick="toggleSchedule()" style="margin-bottom: 10px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; font-size: 16px; background-color: #f2af29; color: #000; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0px 4px 10px rgba(0,0,0,0.4); transition: all 0.4s ease;">
+    <span id="toggleIcon" style="display: inline-block; transition: transform 0.4s ease;">&#9654;</span> View Schedule
+  </button>
+  <div id="scheduleContent" style="display: none; margin-top: 20px; text-align: center; padding: 20px; background: #1f1f1f; border-radius: 10px; box-shadow: 0px 0px 20px #63d729; animation: fadeIn 0.6s ease-in-out;">
+    <h3 style="color: #f2af29;">Weekday Schedule (Monday–Friday)</h3>
+    <p style="color: #ffffff;">8:00 AM – 5:00 PM</p>
+    <h3 style="color: #f2af29;">Weekend Schedule (Saturday–Sunday)</h3>
+    <p style="color: #ffffff;">8:30 AM – 5:00 PM</p>
+  </div>
+</section>
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+
+
 <footer>
 <h2>Translate Page</h2>
 <div id="google_translate_element"></div>
@@ -382,6 +406,64 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+<script>
+  function toggleSchedule() {
+    const section = document.getElementById("scheduleContent");
+    const icon = document.getElementById("toggleIcon");
+
+    if (section.style.display === "none" || section.style.display === "") {
+      section.style.display = "block";
+      icon.style.transform = "rotate(90deg)";
+    } else {
+      section.style.display = "none";
+      icon.style.transform = "rotate(0deg)";
+    }
+  }
+</script>
+
+
+<script>
+  const busStops = ["Robinson Tech", "Brown Hall", "Spartan Station", "Fine Arts Building", "Walmart"];
+  let stopIdx = 0;
+  let progressPercent = 0;
+
+  function updateBusUI() {
+    const busProgress = document.getElementById("busProgress");
+    const stopText = document.getElementById("busStop");
+    const statusOutput = document.getElementById("output");
+    const bulletPoints = document.querySelectorAll('.bullet-point');
+
+    bulletPoints.forEach(point => point.classList.remove("highlighted"));
+    bulletPoints[stopIdx].classList.add("highlighted");
+
+    // Update progress bar
+    progressPercent += 20;
+    if (progressPercent > 100) progressPercent = 20;
+    busProgress.style.width = progressPercent + "%";
+
+    // Update stop text
+    const currentStop = busStops[stopIdx];
+    stopText.innerText = "Next Stop: " + currentStop;
+
+    // Update bus status
+    const messages = [
+      `Approaching ${currentStop}`,
+      `Stopping at ${currentStop}`,
+      `Loading passengers at ${currentStop}`,
+      `2 mins from ${currentStop}`
+    ];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    statusOutput.innerText = randomMessage;
+
+    // Cycle to next stop
+    stopIdx = (stopIdx + 1) % busStops.length;
+  }
+
+  setInterval(updateBusUI, 60000); // update every minute
+  updateBusUI(); // initial call
+</script>
+
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -452,5 +534,63 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 </script>
+
+<script>
+  function toggleSchedule() {
+    const section = document.getElementById("scheduleContent");
+    const icon = document.getElementById("toggleIcon");
+
+    if (section.style.display === "none" || section.style.display === "") {
+      section.style.display = "block";
+      icon.style.transform = "rotate(90deg)";
+    } else {
+      section.style.display = "none";
+      icon.style.transform = "rotate(0deg)";
+    }
+  }
+</script>
+
+
+<script>
+  const busStops = ["Robinson Tech", "Brown Hall", "Spartan Station", "Fine Arts Building", "Walmart"];
+  let stopIdx = 0;
+  let progressPercent = 0;
+
+  function updateBusUI() {
+    const busProgress = document.getElementById("busProgress");
+    const stopText = document.getElementById("busStop");
+    const statusOutput = document.getElementById("output");
+    const bulletPoints = document.querySelectorAll('.bullet-point');
+
+    bulletPoints.forEach(point => point.classList.remove("highlighted"));
+    bulletPoints[stopIdx].classList.add("highlighted");
+
+    // Update progress bar
+    progressPercent += 20;
+    if (progressPercent > 100) progressPercent = 20;
+    busProgress.style.width = progressPercent + "%";
+
+    // Update stop text
+    const currentStop = busStops[stopIdx];
+    stopText.innerText = "Next Stop: " + currentStop;
+
+    // Update bus status
+    const messages = [
+      `Approaching ${currentStop}`,
+      `Stopping at ${currentStop}`,
+      `Loading passengers at ${currentStop}`,
+      `2 mins from ${currentStop}`
+    ];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    statusOutput.innerText = randomMessage;
+
+    // Cycle to next stop
+    stopIdx = (stopIdx + 1) % busStops.length;
+  }
+
+  setInterval(updateBusUI, 60000); // update every minute
+  updateBusUI(); // initial call
+</script>
+
 </body>
 </html>
